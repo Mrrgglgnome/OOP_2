@@ -1,81 +1,67 @@
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
-class Element{
+class kvartira{
 public:
-	void Init(int w, double p){
-		this->weight = w;
-		this->price = p;
+	void Init(int d, float n){
+		this->dohod = d;
+		this->nalog = n;
 	}
 
 	void Display(){
-		cout << "Weight: " << this->weight << "g" << endl;
-		cout << "Price for gram: " << this->price << endl;
+		cout << "dohod in total: " << this->dohod << endl;
+		cout << "NALOGI: " << this->nalog << endl;
 	}
 
-	double Price(){
-		return this->weight*this->price;
+	double Nalogi(){
+		return this->dohod * this->nalog;
 	}
 private:
-	int weight;
-	double price;
+	int dohod;
+	float nalog;
 };
 
-class Izdelie{
+class hrushevka{
 public:
-	void Init(char n[20], Element el[3], int am[3]){
-		for (int i = 0; i < 3; i++){
-			this->elems[i] = el[i];
-			this->amount[i] = am[i];
-		}
-		this->price = 0;
-		for (int i = 0; i < 3; i++)
-			this->price += this->elems[i].Price()*this->amount[i];
+	void Init(kvartira k[10], float v){
 		for (int i = 0; i < 10; i++)
-			this->name[i] = n[i];
+			this->kv[i] = k[i];
+		this->vkarman = v;
+		this->profit = 0;
 	}
 
 	void Display(){
-		cout << "Name: " << this->name << endl;
-		for (int i = 0; i < 3; i++){
-			cout << "Amount of elem #" << i + 1 << ": " << this->amount[i] << endl;
-		}
-		cout << "Price: " << this->price << endl;
+		cout << "% v karman: " << this->vkarman << endl;
+		cout << "Profit: " << this->profit << endl;
 	}
 
-	double Price(){
-		return this->price;
-	}
-
-	Element Max(){
-		Element max = elems[0];
-		for (int i = 1; i < 3; i++)
-			if (this->elems[i].Price() > max.Price())
-				max = elems[i];
-		return max;
+	double Profit(){
+		for (int i = 0; i < 10; i++)
+			this->profit += this->kv[i].Nalogi() * this->vkarman;
+		return this->profit;
 	}
 private:
-	char name[20];
-	Element elems[3];
-	int amount[3];
-	double price;
+	kvartira kv[10];
+	float vkarman;
+	double profit;
 };
 
 int main(){
-	Element el[3];
-	Element elMax;
-	Izdelie izd;
-	int am[3];
-	for (int i = 1; i < 4; i++){
-		el[i - 1].Init(i * 50, i * 30);
-		am[i - 1] = i;
-		el[i - 1].Display();
+	kvartira kv[10];
+	hrushevka hrush;
+	srand(time(0));
+	for (int i = 0; i < 10; i++){
+		int dohod = 10000 + rand() % 50000;
+		kv[i].Init(dohod, 0.20);
 	}
-	izd.Init("Something", el, am);
-	izd.Display();
-	elMax = izd.Max();
-	cout << "Max Element: " << endl;
-	elMax.Display();
+	hrush.Init(kv, 0.4);
+	hrush.Profit();
+	for (int i = 0; i < 10; i++){
+		cout << "Kvartira #" << i + 1 << ": " << endl;
+		kv[i].Display();
+	}
+	hrush.Display();
 	return 0;
 }
