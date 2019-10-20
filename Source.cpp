@@ -24,7 +24,7 @@ private:
 
 class Izdelie{
 public:
-	void Init(Element el[3], int am[3]){
+	void Init(char n[20], Element el[3], int am[3]){
 		for (int i = 0; i < 3; i++){
 			this->elems[i] = el[i];
 			this->amount[i] = am[i];
@@ -32,9 +32,12 @@ public:
 		this->price = 0;
 		for (int i = 0; i < 3; i++)
 			this->price += this->elems[i].Price()*this->amount[i];
+		for (int i = 0; i < 10; i++)
+			this->name[i] = n[i];
 	}
 
 	void Display(){
+		cout << "Name: " << this->name << endl;
 		for (int i = 0; i < 3; i++){
 			cout << "Amount of elem #" << i + 1 << ": " << this->amount[i] << endl;
 		}
@@ -53,6 +56,7 @@ public:
 		return max;
 	}
 private:
+	char name[20];
 	Element elems[3];
 	int amount[3];
 	double price;
@@ -68,7 +72,7 @@ int main(){
 		am[i - 1] = i;
 		el[i - 1].Display();
 	}
-	izd.Init(el, am);
+	izd.Init("Something", el, am);
 	izd.Display();
 	elMax = izd.Max();
 	cout << "Max Element: " << endl;
